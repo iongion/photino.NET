@@ -1315,4 +1315,20 @@ public partial class PhotinoWindow
         if (LogVerbosity < 1) return;
         Console.WriteLine($"Photino.NET: \"{Title ?? "PhotinoWindow"}\"{message}");
     }
+
+    public void DisableTLSCheck()
+    {
+        try
+        {
+            Invoke(() => Photino_DisableTLSCheck(_nativeInstance));
+        }
+        catch (Exception ex)
+        {
+            int lastError = 0;
+            if (IsWindowsPlatform)
+                lastError = Marshal.GetLastWin32Error();
+            Log($"***\n{ex.Message}\n{ex.StackTrace}\nError #{lastError}");
+            throw new ApplicationException($"Native code exception. Error # {lastError}  See inner exception for details.", ex);
+        }
+    }
 }
